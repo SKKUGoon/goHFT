@@ -1,3 +1,6 @@
+![license](https://img.shields.io/github/license/SKKUGoon/goHFT)
+
+
 ## High Frequency Trading Strategy with Go
 
 ### Summary
