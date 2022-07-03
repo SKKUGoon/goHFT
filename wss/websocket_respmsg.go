@@ -16,7 +16,8 @@ type AggTradeStream struct {
 	FirstTradeId int    `json:"f"`
 	LastTradeId  int    `json:"l"`
 	TradeTime    int    `json:"T"`
-	MarketMaker  bool   `json:"m"`
+	BuyerMaker   bool   `json:"m"` // if true - SELL ORDER
+	Placeholder  bool   `json:"M"` // if no Placeholder -> BuyerMaker does not work
 }
 
 /*
@@ -72,13 +73,8 @@ type kline struct {
 	- <symbol>@depth<levels>@<speeds> speeds in 250ms, 500ms or 100ms
 */
 type PartialBookDepthStream struct {
-	EventType               string     `json:"e"`
-	EventTime               int        `json:"E"`
-	TransactionTime         int        `json:"T"`
-	Symbol                  string     `json:"s"`
-	FirstUpdateId           int        `json:"U"`
-	FinalUpdateId           int        `json:"u"`
-	FinalUpdateIdLastStream int        `json:"pu"`
-	Bids                    [][]string `json:"b"`
-	Asks                    [][]string `json:"a"`
+	Symbol       string
+	LastUpdateID int64      `json:"lastUpdateId"`
+	Bids         [][]string `json:"bids"`
+	Asks         [][]string `json:"asks"`
 }

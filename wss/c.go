@@ -1,5 +1,10 @@
 package wss
 
+import (
+	"os"
+	"time"
+)
+
 /*
 	OLD WEBSOCKET DOC
 	* websocket base point 1
@@ -18,8 +23,23 @@ package wss
 */
 
 const (
-	MAINNET_BASE_WSS_SINGLE = "wss://stream.binance.com:9443/ws"
-	TESTNET_BASE_WSS_SINGLE = "wss://testnet.binance.vision/ws"
-	MAINNET_BASE_WSS_MULTI  = "wss://stream.binance.com:9443/stream?streams="
-	TESTNET_BASE_WSS_MULTI  = "wss://testnet.binance.vision/stream?streams="
+	IsTest               = false
+	MainNetBaseWssSingle = "wss://stream.binance.com:9443/ws"
+	TestNetBaseWssSingle = "wss://testnet.binance.vision/ws"
+)
+
+const (
+	ImpactNotional = 50_000
+	WebsocketTO    = time.Second * 60
+)
+
+var (
+	// Receive Messages
+	BookDepthChan = make(chan PartialBookDepthStream)
+	AggTradeChan  = make(chan AggTradeStream)
+
+	// Others
+	VolumePowerChan = make(chan float64)
+	Interruption    = make(chan os.Signal, 1)
+	Ticking         = time.NewTicker(time.Second)
 )

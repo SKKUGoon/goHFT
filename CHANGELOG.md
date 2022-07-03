@@ -27,3 +27,49 @@ initial commit
 [Fix]
 
 [Remove]
+
+
+# 0.1.0
+<p>
+Major Overhall + Newly Activated Functions
+</p>
+
+[Add]
+- ./wss
+  - c.go
+    - const IsTest
+    - const ImpactNotional
+    - const WebSocketTO - TO for TimeOut
+    - var BookDepthChan
+    - var AggTradeChan
+    - var VolumePowerChan
+    - var Interruption
+    - var Ticking
+  - utility_idxCalc.go
+    - func ProcessVolPow
+    - func calcImpactDepth
+    - func calcDepthInfo
+    - func calcDepthWeight
+  - websocket_endpoint.go
+    - func getWxURL
+    - func GetDepthWx
+    - func GetAggTradeWx
+  - websocket_service.go
+    - func searchSymbol 
+    - func WxServe (main)
+    - WxSAggServe
+    - WxDepthServe
+  - websocket_handler.go
+    - func DepthHandler
+    - func AggTradeHandler  - still json writer
+    - KeepAlive - ping pong 
+
+[Change]
+- websocket_endpoint.go - changed from endpoint.go
+- websocket_respmsg.go
+  - struct AggTradeStream - add Placeholder. if there's no placeholder, buyermaker field will always parse 'true'.
+  - struct PartialBookDepthStream - change `json structure'. The official doc was wrong.(not updated)
+
+[Fix]
+
+[Remove]
