@@ -31,7 +31,7 @@ initial commit
 
 # 0.1.0
 <p>
-Major Overhall + Newly Activated Functions
+Major Overhaul + Newly Activated Functions
 </p>
 
 [Add]
