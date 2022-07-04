@@ -38,8 +38,11 @@ var (
 	BookDepthChan = make(chan PartialBookDepthStream)
 	AggTradeChan  = make(chan AggTradeStream)
 
+	// Custom Index
+	PremiumChan  = make(chan float64)
+	VolPowerChan = make(chan float64)
+
 	// Others
-	VolumePowerChan = make(chan float64)
-	Interruption    = make(chan os.Signal, 1)
-	Ticking         = time.NewTicker(time.Second)
+	Interruption = make(chan os.Signal, 1)
+	Ticking      = time.NewTicker(time.Second)
 )

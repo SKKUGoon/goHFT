@@ -65,10 +65,35 @@ Major Overhaul + Newly Activated Functions
     - KeepAlive - ping pong 
 
 [Change]
-- websocket_endpoint.go - changed from endpoint.go
-- websocket_respmsg.go
-  - struct AggTradeStream - add Placeholder. if there's no placeholder, buyermaker field will always parse 'true'.
-  - struct PartialBookDepthStream - change `json structure'. The official doc was wrong.(not updated)
+- ./wss
+  - websocket_endpoint.go - changed from endpoint.go
+  - websocket_respmsg.go
+    - struct AggTradeStream - add Placeholder. if there's no placeholder, buyermaker field will always parse 'true'.
+    - struct PartialBookDepthStream - change `json structure'. The official doc was wrong.(not updated)
+
+[Fix]
+
+[Remove]
+
+
+# 0.1.1
+[Add]
+- ./wss
+  - utility_idxCalc.go
+    - func ProcessVolPower
+
+[Change]
+- ./wss
+  - c.go
+    - chan PremiumChan - renamed from VolPowerChan
+    - chan VolPowerChan
+  - utility_idxCalc.go
+    - func ProcessPremium - rename from ProcessVolPow
+    - func ProcessVolPower
+  - websocket_service.go
+    - func WxAggServe - add ProcessVolPower goroutine
+
+ProcessVolPow 
 
 [Fix]
 

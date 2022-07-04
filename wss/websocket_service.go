@@ -27,7 +27,7 @@ func WxServe() {
 
 	for {
 		select {
-		case volPower := <-VolumePowerChan:
+		case volPower := <-PremiumChan:
 			log.Println(volPower)
 		case <-Ticking.C:
 		}
@@ -37,7 +37,7 @@ func WxServe() {
 /*
 	WxAggServe
 	- Process AggTrade endpoint information
-	- spawn 2 goroutine: KeepAlive & Callback (JSON formatter) func
+	- spawn 3 goroutine: KeepAlive & Callback (JSON formatter) func & ProcessVolPower
 */
 func WxAggServe(io AggTradeWS) {
 	conn, contain, err := GetAggTradeWx(searchSymbol())
@@ -47,6 +47,7 @@ func WxAggServe(io AggTradeWS) {
 
 	go KeepAlive(conn, WebsocketTO)
 	go io(conn, AggTradeChan, &contain)
+	go ProcessVolPower(AggTradeChan)
 }
 
 /*
@@ -62,5 +63,5 @@ func WxDepthServe(io DepthWS) {
 
 	go KeepAlive(conn, WebsocketTO)
 	go io(conn, BookDepthChan, &contain)
-	go ProcessVolPow(BookDepthChan, VolumePowerChan)
+	go ProcessPremium(BookDepthChan, PremiumChan)
 }

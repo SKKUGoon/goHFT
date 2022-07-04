@@ -1,7 +1,6 @@
 package wss
 
 import (
-	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"time"
@@ -25,7 +24,7 @@ func AggTradeHandler(conn *websocket.Conn, tradeStream chan AggTradeStream, cont
 		if err != nil {
 			log.Println("Error in unmarshal : trade :", err)
 		}
-		fmt.Println(container)
+		tradeStream <- *container
 	}
 }
 

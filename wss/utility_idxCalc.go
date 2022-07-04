@@ -1,23 +1,44 @@
 package wss
 
 import (
+	"fmt"
 	"strconv"
 )
 
 /*
-	ProcessVolPow
+	ProcessPremium
 	- goroutine that
 		1) gets data from depthStream
-		2) calc volumePower = BidImpactDepth / AskImpactDepth
+		2) calc premium = BidImpactDepth / AskImpactDepth
 		3) relays volumePower to vpStream
 */
-func ProcessVolPow(depthStream chan PartialBookDepthStream, vpStream chan float64) {
-	defer close(vpStream)
+func ProcessPremium(depthStream chan PartialBookDepthStream, premiumStream chan float64) {
+	defer close(premiumStream)
 	for {
 		select {
 		case m := <-depthStream:
-			vp := calcImpactDepth(m.Bids) / calcImpactDepth(m.Asks) * 100
-			vpStream <- vp
+			premium := calcImpactDepth(m.Bids) / calcImpactDepth(m.Asks) * 100
+			premiumStream <- premium
+		}
+	}
+}
+
+/*
+	ProcessVolPower
+	- goroutine that
+		1) gets data from tradeStream
+		2) calc
+*/
+func ProcessVolPower(tradeStream chan AggTradeStream) {
+	defer close(tradeStream)
+	for {
+		select {
+		case t := <-tradeStream:
+			if t.BuyerMaker {
+				fmt.Println("sell", t.Quantity)
+			} else {
+				fmt.Println("buy", t.Quantity)
+			}
 		}
 	}
 }
@@ -72,5 +93,4 @@ func calcDepthWeight(data [][]string) float64 {
 	} else {
 		return -1
 	}
-
 }
