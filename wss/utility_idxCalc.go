@@ -29,16 +29,24 @@ func ProcessPremium(depthStream chan PartialBookDepthStream, premiumStream chan 
 		1) gets data from tradeStream
 		2) calc
 */
-func ProcessVolPower(tradeStream chan AggTradeStream) {
+func ProcessVolPower(tradeStream chan AggTradeStream, resultStream chan float64) {
 	defer close(tradeStream)
+
+	var buyTick float64
+	var sellTick float64
 	for {
 		select {
 		case t := <-tradeStream:
+			q, _ := strconv.ParseFloat(t.Quantity, 64)
 			if t.BuyerMaker {
-				fmt.Println("sell", t.Quantity)
+				sellTick += q
 			} else {
-				fmt.Println("buy", t.Quantity)
+				buyTick += q
 			}
+		case t := <-Ticking.C:
+			fmt.Println("tick", t, buyTick/sellTick)
+			resultStream <- buyTick / sellTick
+			buyTick, sellTick = 0, 0
 		}
 	}
 }

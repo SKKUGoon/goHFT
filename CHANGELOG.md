@@ -98,3 +98,30 @@ ProcessVolPow
 [Fix]
 
 [Remove]
+
+# 0.1.2
+<p>
+new go routine. Calculate Volume power every 500 milliseconds
+</p>
+
+[Add]
+
+[Change]
+- ./wss
+  - utility_idxCalc.go
+    - func ProcessVolPower 
+      - if get tradeStream { add up } if get tick { push VolPow to chan }. 
+  - websocket_service.go
+    - func WxServe
+      - pull premium from PremiumChan
+      - pull volPower from VolPowerChan
+    - func WxAggServe
+      - start another go routine ProcessVolPower
+
+[Fix]
+
+[Remove]
+- ./wss
+  - c.go
+    - Interruption channel
+    - 

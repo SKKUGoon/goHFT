@@ -27,9 +27,10 @@ func WxServe() {
 
 	for {
 		select {
-		case volPower := <-PremiumChan:
+		case premium := <-PremiumChan:
+			log.Println(premium)
+		case volPower := <-VolPowerChan:
 			log.Println(volPower)
-		case <-Ticking.C:
 		}
 	}
 }
@@ -47,7 +48,7 @@ func WxAggServe(io AggTradeWS) {
 
 	go KeepAlive(conn, WebsocketTO)
 	go io(conn, AggTradeChan, &contain)
-	go ProcessVolPower(AggTradeChan)
+	go ProcessVolPower(AggTradeChan, VolPowerChan)
 }
 
 /*

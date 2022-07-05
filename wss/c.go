@@ -1,7 +1,6 @@
 package wss
 
 import (
-	"os"
 	"time"
 )
 
@@ -43,6 +42,5 @@ var (
 	VolPowerChan = make(chan float64)
 
 	// Others
-	Interruption = make(chan os.Signal, 1)
-	Ticking      = time.NewTicker(time.Second)
+	Ticking = time.NewTicker(500 * time.Millisecond)
 )
