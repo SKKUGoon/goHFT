@@ -1,7 +1,7 @@
 package wss
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 )
 
@@ -34,6 +34,11 @@ func ProcessVolPower(tradeStream chan AggTradeStream, resultStream chan float64)
 
 	var buyTick float64
 	var sellTick float64
+	var trend = map[string]int{
+		"u": 0,
+		"d": 0,
+		"n": 0,
+	}
 	for {
 		select {
 		case t := <-tradeStream:
@@ -43,10 +48,27 @@ func ProcessVolPower(tradeStream chan AggTradeStream, resultStream chan float64)
 			} else {
 				buyTick += q
 			}
-		case t := <-Ticking.C:
-			fmt.Println("tick", t, buyTick/sellTick)
-			resultStream <- buyTick / sellTick
+		case <-Ticking.C:
+			// update trend info by 500 milliseconds
+			switch {
+			case (buyTick == 0) && (sellTick == 0):
+				trend["n"] += 1
+			case (buyTick / sellTick) > 5:
+				trend["u"] += 1
+			case (buyTick / sellTick) <= 0.2:
+				trend["d"] += 1
+			default:
+				trend["n"] += 1
+			}
+			//resultStream <- buyTick / sellTick
+			//fmt.Println("tick", buyTick/sellTick)
 			buyTick, sellTick = 0, 0
+		case <-Gathering.C:
+			// TODO: develop logic that identifies upward downward trend
+			t := calcTrend(trend)
+			log.Println(t)
+			trend["u"], trend["d"], trend["n"] = 0, 0, 0
+
 		}
 	}
 }
@@ -86,19 +108,14 @@ func calcDepthInfo(frag []string) (float64, float64, float64) {
 	return prcF * qtyF, prcF, qtyF
 }
 
-func calcDepthWeight(data [][]string) float64 {
-	var (
-		depthProd float64
-		depthQty  float64
-	)
-	for _, r := range data {
-		sp, _, q := calcDepthInfo(r)
-		depthProd += sp
-		depthQty += q
+func calcTrend(data map[string]int) string {
+	var maxKey string
+	var maxi = -1
+	for k, v := range data {
+		if v > maxi {
+			maxi = v
+			maxKey = k
+		}
 	}
-	if depthQty != 0 {
-		return depthProd / depthQty
-	} else {
-		return -1
-	}
+	return maxKey
 }

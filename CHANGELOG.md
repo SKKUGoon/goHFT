@@ -124,4 +124,24 @@ new go routine. Calculate Volume power every 500 milliseconds
 - ./wss
   - c.go
     - Interruption channel
-    - 
+
+# 0.1.3
+<p>
+1 TODO, 1 FIXME added. tech is here. need strategy
+</p>
+
+[Add]
+
+[Change]
+- ./wss
+  - utility_idxCalc.go
+    - case Ticking.C: add instance count to find trend
+    - case Gathering.C: trend finding? it's little wierd. 
+    - NEED TO FIND TREND BY ANALYZING ADDING SEQUENCE. U U D D -> should be D or U?
+
+[Fix]
+
+[Remove]
+
+
+

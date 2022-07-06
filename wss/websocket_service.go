@@ -27,8 +27,9 @@ func WxServe() {
 
 	for {
 		select {
-		case premium := <-PremiumChan:
-			log.Println(premium)
+		case <-PremiumChan:
+			// FIXME: reactive here if needed
+			//log.Println(premium)
 		case volPower := <-VolPowerChan:
 			log.Println(volPower)
 		}

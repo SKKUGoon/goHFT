@@ -42,5 +42,6 @@ var (
 	VolPowerChan = make(chan float64)
 
 	// Others
-	Ticking = time.NewTicker(500 * time.Millisecond)
+	Ticking   = time.NewTicker(500 * time.Millisecond)
+	Gathering = time.NewTicker(5 * time.Second)
 )
